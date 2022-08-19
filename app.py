@@ -38,7 +38,8 @@ def predictTumor():
     ratio  = float(request.form.get('ratio'))
     predictionOfRfModel = rfModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
-    return str(predictionOfRfModel[0])
+    #prediction
+    return str(predictionOfRfModel[0]) 
 
 if(__name__=="__main__"):
     app.run(debug=True)
