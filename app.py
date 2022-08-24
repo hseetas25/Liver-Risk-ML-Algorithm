@@ -45,7 +45,7 @@ def predictTumor():
     predictionOflrModel = lrModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
     #prediction
-    #print(predictionOfRfModel[0],predictionOfgnbModel[0],predictionOflrModel[0])
+    print(predictionOfRfModel[0],predictionOfgnbModel[0],predictionOflrModel[0])
     l=[predictionOfRfModel[0],predictionOfgnbModel[0],predictionOflrModel[0]]
     if l.count(1)>l.count(2):
         return str(1)
