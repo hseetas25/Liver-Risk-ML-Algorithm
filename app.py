@@ -7,6 +7,7 @@ import pickle
 #pandas and numpy (dataframe) library
 import pandas as pd
 import numpy as np
+#from sklearn.neighbors import _dist_metrics
 
 #CORS Policy library
 from flask_cors import CORS, cross_origin
@@ -15,21 +16,21 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__,template_folder='view')
 
 #open and read the RF-model
-rfModel = pickle.load(open('Rf.pickle','rb'))
-gnbModel = pickle.load(open('Gaussian.pickle','rb'))
-lrModel = pickle.load(open('Logistic.pickle','rb'))
+RFModel = pickle.load(open('smote_RandomForest.pickle','rb'))
+adbModel = pickle.load(open('smote_adb.pickle','rb'))
+lrModel = pickle.load(open('smote_Logistic.pickle','rb'))
+#dtreeModel = pickle.load(open('DecisionTree.pickle','rb'))
+#KNNModel = pickle.load(open('Knn.pickle','rb'))
 
 @cross_origin()
 @app.route("/", methods = ['GET', 'POST'])
 def home():
-    gender = ['Male', 'Female']
-    return render_template('index.html', gender = gender)
+    return render_template('index.html')
 
 @cross_origin()
 @app.route('/predict-liver-tumor',methods=['POST'])
 def predictTumor():
     age = int(request.form.get('age'))
-    gender = str(request.form.get('gender'))
     totalbilirubin = float(request.form.get('totalbilirubin'))
     directbilirubin = float(request.form.get('directbilirubin'))
     alkaline = float(request.form.get('alkaline'))
@@ -38,18 +39,22 @@ def predictTumor():
     protiens = float(request.form.get('protiens'))
     albumin = float(request.form.get('albumin'))
     ratio  = float(request.form.get('ratio'))
-    predictionOfRfModel = rfModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+    predictionOfRFModel = RFModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
-    predictionOfgnbModel = gnbModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+    predictionOfadbModel = adbModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
     predictionOflrModel = lrModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
+    #predictionOfdtreeModel = dtreeModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+                 #data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
+    #predictionOfKNNModel = KNNModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+                 #data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
     #prediction
-    print(predictionOfRfModel[0],predictionOfgnbModel[0],predictionOflrModel[0])
-    l=[predictionOfRfModel[0],predictionOfgnbModel[0],predictionOflrModel[0]]
-    if l.count(1)>l.count(2):
+    #print(predictionOfRFModel[0],predictionOfadbModel[0],predictionOflrModel[0])
+    l=[predictionOfRFModel[0],predictionOfadbModel[0],predictionOflrModel[0]]
+    if l.count(1)>=l.count(2):
         return str(1)
-    return str(2) 
+    return str(2)
 
 if(__name__=="__main__"):
     app.run(debug=True)
