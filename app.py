@@ -32,22 +32,21 @@ def home():
 def predictTumor():
     age = int(request.form.get('age'))
     totalbilirubin = float(request.form.get('totalbilirubin'))
-    directbilirubin = float(request.form.get('directbilirubin'))
     alkaline = float(request.form.get('alkaline'))
     alamine = float(request.form.get('alamine'))
     aspartate = float(request.form.get('aspartate'))
     protiens = float(request.form.get('protiens'))
     albumin = float(request.form.get('albumin'))
     ratio  = float(request.form.get('ratio'))
-    predictionOfRFModel = RFModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
-                 data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
-    predictionOfadbModel = adbModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
-                 data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
-    predictionOflrModel = lrModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
-                 data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
-    #predictionOfdtreeModel = dtreeModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+    predictionOfRFModel = RFModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+                 data = np.array([age,totalbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,8)))
+    predictionOfadbModel = adbModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+                 data = np.array([age,totalbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,8)))
+    predictionOflrModel = lrModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+                 data = np.array([age,totalbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,8)))
+    #predictionOfdtreeModel = dtreeModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  #data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
-    #predictionOfKNNModel = KNNModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin','Direct_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
+    #predictionOfKNNModel = KNNModel.predict(pd.DataFrame(columns=['Age', 'Total_Bilirubin', 'Alkaline_Phosphotase', 'Alamine_Aminotransferase','Aspartate_Aminotransferase','Total_Protiens', 'Albumin', 'Albumin_and_Globulin_Ratio'],
                  #data = np.array([age,totalbilirubin,directbilirubin, alkaline, alamine,aspartate,protiens, albumin, ratio]).reshape(1,9)))
     #prediction
     #print(predictionOfRFModel[0],predictionOfadbModel[0],predictionOflrModel[0])
